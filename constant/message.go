@@ -13,10 +13,11 @@ const (
 
 // Success Message
 const (
-	SUCCESS_MESSAGE = 200
+	SUCCESS_MESSAGE = "success"
 )
 
 // Error Message
 const (
-	BAD_REQUEST_MESSAGE = "Invalid request"
+	BAD_REQUEST_MESSAGE   = "Invalid request"
+	TOKEN_GENERATE_FAILED = "Token generation failed"
 )

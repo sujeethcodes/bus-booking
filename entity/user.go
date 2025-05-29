@@ -5,14 +5,8 @@ type User struct {
 	Name        string
 	Email       string
 	Password    string
+	Token       string
 	PhoneNumber int
-	Address     Address
-}
-
-type Address struct {
-	Street   string
-	City     string
-	PostCode int
-	State    string
-	Country  string
+	Address     interface{}
+	Status      string
 }
