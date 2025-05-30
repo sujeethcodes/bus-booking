@@ -6,6 +6,7 @@ import (
 	"bus-booking/repository"
 	"bus-booking/usecase"
 	"bus-booking/utils"
+	"encoding/json"
 	"fmt"
 
 	"github.com/labstack/echo/v4"
@@ -21,9 +22,20 @@ func (u *UserController) CreateUser(c echo.Context) error {
 		return c.JSON(constant.BAD_REQUEST, entity.Response{
 			Status:  constant.BAD_REQUEST,
 			Message: constant.BAD_REQUEST_MESSAGE,
-			Error:   err.Error(),
 		})
 	}
+	userUsecase := usecase.UserUsecase{
+		Mysql: u.Mysql,
+	}
+	details, _ := userUsecase.IsEmailExit(req.Email)
+	fmt.Println("email-----", details.Email)
+	if len(details.Email) != 0 {
+		return c.JSON(constant.BAD_REQUEST, entity.Response{
+			Status:  constant.BAD_REQUEST,
+			Message: constant.EMAIL_EXIST,
+		})
+	}
+
 	req.UserID = utils.GenerateUserID()
 	token, err := utils.GenerateToken(req.UserID)
 	fmt.Println("token----", token)
@@ -38,9 +50,10 @@ func (u *UserController) CreateUser(c echo.Context) error {
 		})
 	}
 	req.Token = token
-	userUsecase := usecase.UserUsecase{
-		Mysql: u.Mysql,
-	}
+
+	jsonData, _ := json.Marshal(req.Address)
+	req.Address = jsonData
+
 	if err := userUsecase.CreateUser(req); err != nil {
 		return c.JSON(constant.BAD_REQUEST, entity.Response{
 			Status:  constant.BAD_REQUEST,
