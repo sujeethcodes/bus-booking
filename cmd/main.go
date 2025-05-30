@@ -33,6 +33,7 @@ func main() {
 	}
 	// USER - Routes
 	e.POST("/user", containerInstane.UserInstance.CreateUser)
+	e.PUT("/user", containerInstane.UserInstance.EditUser)
 
 	e.Start(":" + PORT)
 }
