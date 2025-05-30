@@ -25,3 +25,17 @@ func (u *UserUsecase) CreateUser(req entity.User) error {
 	return nil
 
 }
+
+func (u *UserUsecase) IsEmailExit(email string) (entity.User, error) {
+	if u.Mysql == nil {
+		zap.L().Info("Database connection failed")
+		return entity.User{}, errors.New("database connection not initialized")
+	}
+	User := entity.User{}
+
+	err := u.Mysql.Connection.Table(constant.USER_TABLE_NAME).Where("email = ?", email).First(&User).Error
+	if err != nil {
+		return User, err
+	}
+	return User, nil
+}
