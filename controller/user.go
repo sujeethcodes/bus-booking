@@ -3,9 +3,12 @@ package controller
 import (
 	"bus-booking/constant"
 	"bus-booking/entity"
+	"bus-booking/middleware"
 	"bus-booking/repository"
 	"bus-booking/usecase"
+
 	"bus-booking/utils"
+
 	"encoding/json"
 	"fmt"
 
@@ -37,7 +40,7 @@ func (u *UserController) CreateUser(c echo.Context) error {
 	}
 
 	req.UserID = utils.GenerateUserID()
-	token, err := utils.GenerateToken(req.UserID)
+	token, err := middleware.GenerateToken(req.UserID)
 	fmt.Println("token----", token)
 	fmt.Println("len token----", len(token))
 
@@ -76,6 +79,12 @@ func (u *UserController) EditUser(c echo.Context) error {
 	address := c.QueryParam("address")
 	status := c.QueryParam("status")
 
+	if err := utils.VerifyUserId(user_id, c); err != nil {
+		return c.JSON(constant.UNAUTHORIZED, entity.Response{
+			Status:  constant.UNAUTHORIZED,
+			Message: constant.INVAILD_USER_ID,
+		})
+	}
 	req := entity.EditUserReq{
 		UserID:      user_id,
 		Name:        name,

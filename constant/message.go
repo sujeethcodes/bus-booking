@@ -22,4 +22,5 @@ const (
 	TOKEN_GENERATE_FAILED = "Token generation failed"
 	EMAIL_EXIST           = "Email already have a account"
 	DB_USER_UPDATE_FAIL   = "user update failed"
+	INVAILD_USER_ID       = "invaild user id"
 )

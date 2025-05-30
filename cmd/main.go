@@ -3,6 +3,7 @@ package main
 import (
 	"bus-booking/connectors"
 	"bus-booking/controller"
+	"bus-booking/middleware"
 	"bus-booking/repository"
 
 	"os"
@@ -31,9 +32,12 @@ func main() {
 	if PORT == "" {
 		PORT = "8080"
 	}
+
+	// user protect group
+	userGropu := e.Group("/user", middleware.JWTMiddleware())
 	// USER - Routes
 	e.POST("/user", containerInstane.UserInstance.CreateUser)
-	e.PUT("/user", containerInstane.UserInstance.EditUser)
+	userGropu.PUT("", containerInstane.UserInstance.EditUser)
 
 	e.Start(":" + PORT)
 }

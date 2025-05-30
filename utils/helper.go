@@ -1,7 +1,10 @@
 package utils
 
 import (
+	"errors"
 	"math/rand"
+
+	"github.com/labstack/echo/v4"
 )
 
 func GenerateUserID() string {
@@ -11,4 +14,12 @@ func GenerateUserID() string {
 		id += string(chars[rand.Intn(len(chars))])
 	}
 	return id
+}
+
+func VerifyUserId(user_id string, c echo.Context) error {
+	verifyUserid := c.Get("userID")
+	if verifyUserid != user_id {
+		return errors.New("invaild userid ")
+	}
+	return nil
 }
