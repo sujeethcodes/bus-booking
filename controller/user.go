@@ -112,3 +112,31 @@ func (u *UserController) EditUser(c echo.Context) error {
 		Message: constant.SUCCESS_MESSAGE,
 	})
 }
+
+func (u *UserController) DeleteUser(c echo.Context) error {
+
+	req := entity.DeleteUserReq{}
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(constant.BAD_REQUEST, entity.Response{
+			Status:  constant.BAD_REQUEST,
+			Message: constant.BAD_REQUEST_MESSAGE,
+		})
+	}
+
+	userUsecase := usecase.UserUsecase{
+		Mysql: u.Mysql,
+	}
+	req.Status = constant.IN_ACTIVE
+	err := userUsecase.DeleteUser(req)
+	if err != nil {
+		return c.JSON(constant.BAD_REQUEST, entity.Response{
+			Status:  constant.BAD_REQUEST,
+			Message: constant.DB_USER_DELETE_FAIL,
+			Error:   err.Error(),
+		})
+	}
+	return c.JSON(constant.SUCCESS, entity.Response{
+		Status:  constant.SUCCESS,
+		Message: constant.DELETE_SUCCESS_MESSAGE,
+	})
+}

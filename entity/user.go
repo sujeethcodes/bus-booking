@@ -22,3 +22,8 @@ type EditUserReq struct {
 	Address     json.RawMessage `json:"address,omitempty"`
 	Status      string          `json:"status,omitempty"`
 }
+
+type DeleteUserReq struct {
+	UserID string `json:"user_id"`
+	Status string `json:"status"`
+}

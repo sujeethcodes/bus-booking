@@ -38,6 +38,7 @@ func main() {
 	// USER - Routes
 	e.POST("/user", containerInstane.UserInstance.CreateUser)
 	userGropu.PUT("", containerInstane.UserInstance.EditUser)
+	userGropu.DELETE("", containerInstane.UserInstance.DeleteUser)
 
 	e.Start(":" + PORT)
 }
