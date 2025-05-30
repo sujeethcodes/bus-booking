@@ -5,6 +5,7 @@ import (
 	"bus-booking/entity"
 	"bus-booking/repository"
 	"errors"
+	"fmt"
 
 	"go.uber.org/zap"
 )
@@ -38,4 +39,42 @@ func (u *UserUsecase) IsEmailExit(email string) (entity.User, error) {
 		return User, err
 	}
 	return User, nil
+}
+
+func (u *UserUsecase) EditUser(req *entity.EditUserReq) error {
+	fmt.Println("req---", req)
+	if u.Mysql == nil {
+		zap.L().Info("Database connection failed")
+		return errors.New("database connection not initialized")
+	}
+	updates := make(map[string]interface{})
+
+	if req.Name != "" {
+		updates["name"] = req.Name
+	}
+	if req.Email != "" {
+		updates["email"] = req.Email
+	}
+	if req.Password != "" {
+		updates["password"] = req.Password
+	}
+	if req.PhoneNumber != "" {
+		updates["phone_number"] = req.PhoneNumber
+	}
+	if len(req.Address) > 0 && string(req.Address) != "null" {
+		updates["address"] = req.Address
+	}
+	if req.Status != "" {
+		updates["status"] = req.Status
+	}
+
+	// If no updates, return early
+	if len(updates) == 0 {
+		return errors.New("no fields provided to update")
+	}
+	err := u.Mysql.Connection.Table(constant.USER_TABLE_NAME).Where("user_id = ?", req.UserID).Updates(updates)
+	if err != nil {
+		return err.Error
+	}
+	return nil
 }

@@ -66,3 +66,40 @@ func (u *UserController) CreateUser(c echo.Context) error {
 		Message: constant.SUCCESS_MESSAGE,
 	})
 }
+
+func (u *UserController) EditUser(c echo.Context) error {
+	user_id := c.QueryParam("user_id")
+	name := c.QueryParam("name")
+	email := c.QueryParam("email")
+	password := c.QueryParam("password")
+	phone_number := c.QueryParam("phone_number")
+	address := c.QueryParam("address")
+	status := c.QueryParam("status")
+
+	req := entity.EditUserReq{
+		UserID:      user_id,
+		Name:        name,
+		Email:       email,
+		Password:    password,
+		PhoneNumber: phone_number,
+		Address:     json.RawMessage(address),
+		Status:      status,
+	}
+
+	userUsecase := usecase.UserUsecase{
+		Mysql: u.Mysql,
+	}
+
+	err := userUsecase.EditUser(&req)
+	if err != nil {
+		return c.JSON(constant.BAD_REQUEST, entity.Response{
+			Status:  constant.BAD_REQUEST,
+			Message: constant.DB_USER_UPDATE_FAIL,
+			Error:   err.Error(),
+		})
+	}
+	return c.JSON(constant.SUCCESS, entity.Response{
+		Status:  constant.SUCCESS,
+		Message: constant.SUCCESS_MESSAGE,
+	})
+}
