@@ -11,6 +11,7 @@ type User struct {
 	PhoneNumber string          `json:"phone_number"`
 	Address     json.RawMessage `json:"address"`
 	Status      string          `json:"status"`
+	UserType    string          `json:"user_type"`
 }
 
 type EditUserReq struct {

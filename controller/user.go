@@ -38,8 +38,16 @@ func (u *UserController) CreateUser(c echo.Context) error {
 			Message: constant.EMAIL_EXIST,
 		})
 	}
-
+	if req.UserType != constant.ADMIN && req.UserType != constant.USER {
+		return c.JSON(constant.BAD_REQUEST, entity.Response{
+			Status:  constant.BAD_REQUEST,
+			Message: constant.INVAILD_USER_TYPE_MESSAGE,
+		})
+	}
 	req.UserID = utils.GenerateUserID()
+	if req.UserType == constant.ADMIN {
+		req.UserID = "adm_" + req.UserID
+	}
 	token, err := middleware.GenerateToken(req.UserID)
 	fmt.Println("token----", token)
 	fmt.Println("len token----", len(token))

@@ -13,11 +13,13 @@ import (
 
 type Container struct {
 	UserInstance controller.UserController
+	BusInstance  controller.BusController
 }
 
 func LoadContainer() *Container {
 	return &Container{
 		UserInstance: controller.UserController{Mysql: repository.SingletonMysqlCon()},
+		BusInstance:  controller.BusController{Mysql: repository.SingletonMysqlCon()},
 	}
 }
 
@@ -39,6 +41,7 @@ func main() {
 	e.POST("/user", containerInstane.UserInstance.CreateUser)
 	userGropu.PUT("", containerInstane.UserInstance.EditUser)
 	userGropu.DELETE("", containerInstane.UserInstance.DeleteUser)
+	e.POST("/bus", containerInstane.BusInstance.BusCreate)
 
 	e.Start(":" + PORT)
 }

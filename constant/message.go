@@ -19,11 +19,12 @@ const (
 
 // Error Message
 const (
-	BAD_REQUEST_MESSAGE   = "Invalid request"
-	TOKEN_GENERATE_FAILED = "Token generation failed"
-	EMAIL_EXIST           = "Email already have a account"
-	DB_USER_UPDATE_FAIL   = "user update failed"
-	DB_USER_DELETE_FAIL   = "user delete failed"
+	BAD_REQUEST_MESSAGE       = "Invalid request"
+	INVAILD_USER_TYPE_MESSAGE = "Invalid user type request"
+	TOKEN_GENERATE_FAILED     = "Token generation failed"
+	EMAIL_EXIST               = "Email already have a account"
+	DB_USER_UPDATE_FAIL       = "user update failed"
+	DB_USER_DELETE_FAIL       = "user delete failed"
 
 	INVAILD_USER_ID = "invaild user id"
 )
