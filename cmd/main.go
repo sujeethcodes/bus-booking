@@ -36,12 +36,12 @@ func main() {
 	}
 
 	// user protect group
-	userGropu := e.Group("/user", middleware.JWTMiddleware())
+	userGroup := e.Group("", middleware.JWTMiddleware())
 	// USER - Routes
 	e.POST("/user", containerInstane.UserInstance.CreateUser)
-	userGropu.PUT("", containerInstane.UserInstance.EditUser)
-	userGropu.DELETE("", containerInstane.UserInstance.DeleteUser)
-	e.POST("/bus", containerInstane.BusInstance.BusCreate)
+	userGroup.PUT("/user", containerInstane.UserInstance.EditUser)
+	userGroup.DELETE("/user", containerInstane.UserInstance.DeleteUser)
+	userGroup.POST("/bus", containerInstane.BusInstance.BusCreate)
 
 	e.Start(":" + PORT)
 }

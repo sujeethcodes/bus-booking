@@ -92,3 +92,20 @@ func (u *UserUsecase) DeleteUser(req entity.DeleteUserReq) error {
 	}
 	return nil
 }
+
+func (u *UserUsecase) FindUser(userId interface{}) (entity.User, error) {
+	fmt.Println("Enter find user")
+
+	fmt.Println("userId--->", userId)
+	user := entity.User{}
+	if u.Mysql == nil {
+		zap.L().Info("Database connection failed")
+		return user, errors.New("database connection not initialized")
+	}
+
+	err := u.Mysql.Connection.Table(constant.USER).Where("user_id = ?", userId).Scan(&user).Error
+	if err != nil {
+		return user, errors.New("user fetch failed")
+	}
+	return user, nil
+}

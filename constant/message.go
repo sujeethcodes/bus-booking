@@ -25,6 +25,6 @@ const (
 	EMAIL_EXIST               = "Email already have a account"
 	DB_USER_UPDATE_FAIL       = "user update failed"
 	DB_USER_DELETE_FAIL       = "user delete failed"
-
-	INVAILD_USER_ID = "invaild user id"
+	INVAILD_USER_ID           = "invaild user id"
+	USER_ACCOUNT              = "this is user account"
 )
