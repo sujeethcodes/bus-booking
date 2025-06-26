@@ -7,6 +7,10 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// var (
+// 	Mysqlcon *repository.MysqlCon
+// )
+
 func GenerateUserID() string {
 	chars := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	id := ""

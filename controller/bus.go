@@ -16,28 +16,6 @@ type BusController struct {
 }
 
 func (b *BusController) BusCreate(c echo.Context) error {
-	verifyId := c.Get("userID")
-	// fmt.Println("veridyId----", veridyId)
-	userUsecase := usecase.UserUsecase{
-		Mysql: b.Mysql,
-	}
-
-	user, err := userUsecase.FindUser(verifyId)
-	if err != nil {
-		return c.JSON(constant.BAD_REQUEST, entity.Response{
-			Status:  constant.BAD_REQUEST,
-			Message: constant.BAD_REQUEST_MESSAGE,
-			Error:   err,
-		})
-	}
-
-	if user.UserType != constant.ADMIN {
-		return c.JSON(constant.BAD_REQUEST, entity.Response{
-			Status:  constant.BAD_REQUEST,
-			Message: constant.USER_ACCOUNT,
-		})
-	}
-
 	req := entity.Bus{}
 	if err := c.Bind(&req); err != nil {
 		return c.JSON(constant.BAD_REQUEST, entity.Response{

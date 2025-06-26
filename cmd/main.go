@@ -41,7 +41,7 @@ func main() {
 	e.POST("/user", containerInstane.UserInstance.CreateUser)
 	userGroup.PUT("/user", containerInstane.UserInstance.EditUser)
 	userGroup.DELETE("/user", containerInstane.UserInstance.DeleteUser)
-	userGroup.POST("/bus", containerInstane.BusInstance.BusCreate)
+	userGroup.POST("/bus", containerInstane.BusInstance.BusCreate, middleware.AdminMiddleware(repository.SingletonMysqlCon()))
 
 	e.Start(":" + PORT)
 }

@@ -2,11 +2,14 @@ package repository
 
 import (
 	"fmt"
+	"log"
 	"os"
+	"time"
 
 	"github.com/matryer/resync"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 var onceMysql resync.Once
@@ -24,7 +27,17 @@ func SingletonMysqlCon() *MysqlCon {
 		dbHost := os.Getenv("DB_HOST")
 		dbName := os.Getenv("DB_NAME")
 		dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", userName, password, dbHost, dbName)
-		db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+		db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+			Logger: logger.New(
+				log.New(os.Stdout, "\r\n", log.LstdFlags), // logs to terminal
+				logger.Config{
+					SlowThreshold:             time.Second,
+					LogLevel:                  logger.Info, // or logger.Warn / logger.Error
+					IgnoreRecordNotFoundError: true,
+					Colorful:                  true,
+				},
+			),
+		})
 		if err != nil {
 			fmt.Println("could not create db:", err)
 			return
